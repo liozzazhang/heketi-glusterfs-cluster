@@ -3,9 +3,9 @@
 [![Build Status](https://travis-ci.org/gluster/gluster-kubernetes.svg?branch=master)](https://travis-ci.org/gluster/gluster-kubernetes)
 
 ## Preparation
-   - Install glusterfs-client on each node
-   - Load kernel mode: modprobe dm_thin_pool
-   - At least 3 nodes with at least one available block disk. such as /dev/xda, /dev/xdb 
+   - Install glusterfs-client on each node: `yum install glusterfs-client`
+   - Load kernel mode: `modprobe dm_thin_pool`
+   - At least 3 nodes with at least one available block disk. such as /dev/xda, /dev/xdb .
    - Check All available disk can be formatted via `lvcreate` command. You can run `lvcreate /dev/xda` to verify!
    - Label glusterfs node specified in `templetes/glusterfs-deploy.yaml` _nodeSelector_ section.
    
