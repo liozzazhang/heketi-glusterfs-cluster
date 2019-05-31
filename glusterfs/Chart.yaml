@@ -6,5 +6,5 @@ maintainers:
   name: lizzano
 name: glusterfs
 sources:
-- https://github.com/liozzazhang/kubernetes-glusterfs-cluster
+- https://github.com/liozzazhang/heketi-glusterfs-cluster
 version: 0.1.0
