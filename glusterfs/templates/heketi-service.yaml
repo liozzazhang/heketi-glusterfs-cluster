@@ -1,0 +1,20 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: heketi
+  labels:
+    glusterfs: heketi-service
+    deploy-heketi: support
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+  namespace: "{{.Release.Namespace}}"
+  annotations:
+    description: Exposes Heketi Service
+spec:
+  selector:
+    name: heketi
+  ports:
+    - name: heketi
+      port: 8080
+      targetPort: 8080

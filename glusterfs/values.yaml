@@ -1,0 +1,63 @@
+# Default values for glusterfs.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+
+glusterfs:
+  image:
+    repository: gluster/gluster-centos
+    tag: latest
+    pullPolicy: Always
+  resources:
+    limits:
+      cpu: 100m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+
+heketi:
+  image:
+    repository: heketi/heketi
+    tag: 4
+    pullPolicy: Always
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+
+topology:
+  - node:
+      hostnames:
+        manage:
+          - 10.18.32.113 # your kubernetes node Name. You can use `kubectl get node` to get NAME column.
+        storage:
+          - 10.18.32.113 # node IP
+      zone: 1 # glusterfs zone number, can keep default
+    devices:
+      - /dev/vda # device path
+  - node:
+      hostnames:
+        manage:
+          - 10.18.32.114
+        storage:
+          - 10.18.32.114
+      zone: 1
+    devices:
+      - /dev/vda
+  - node:
+      hostnames:
+        manage:
+          - 10.18.32.145
+        storage:
+          - 10.18.32.145
+      zone: 1
+    devices:
+      - /dev/vda
+
+kubernetes:
+    namespace: library

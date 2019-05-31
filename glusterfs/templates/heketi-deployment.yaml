@@ -1,0 +1,72 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: heketi
+  labels:
+    glusterfs: heketi-deployment
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+  namespace: "{{.Release.Namespace}}"
+  annotations:
+    description: Defines how to deploy Heketi
+spec:
+  replicas: 1 # heketi only support single server, Don't change the replica num!
+  template:
+    metadata:
+      name: heketi
+      labels:
+        name: heketi
+        glusterfs: heketi-pod
+        heritage: {{.Release.Service | quote }}
+        release: {{.Release.Name | quote }}
+        chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    spec:
+      serviceAccountName: heketi-service-account
+      containers:
+      - image: '{{ .Values.heketi.image.repository }}:{{ .Values.heketi.image.tag }}'
+        imagePullPolicy: {{ .Values.heketi.image.pullPolicy }}
+        name: heketi
+        env:
+        - name: HEKETI_EXECUTOR
+          value: kubernetes
+        - name: HEKETI_CLI_SERVER
+          value: "http://localhost:8080"
+        - name: HEKETI_FSTAB
+          value: "/var/lib/heketi/fstab"
+        - name: HEKETI_SNAPSHOT_LIMIT
+          value: '14'
+        - name: HEKETI_KUBE_GLUSTER_DAEMONSET
+          value: "y"
+        - name: HEKETI_KUBE_NAMESPACE
+          value: "{{.Release.Namespace}}"
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: db
+          mountPath: "/var/lib/heketi"
+        - name: heketi-db-secret
+          mountPath: "/backupdb"
+        - name: heketi-topology
+          mountPath: /etc/heketi-topology
+        readinessProbe:
+          timeoutSeconds: 3
+          initialDelaySeconds: 3
+          httpGet:
+            path: "/hello"
+            port: 8080
+        livenessProbe:
+          timeoutSeconds: 3
+          initialDelaySeconds: 30
+          httpGet:
+            path: "/hello"
+            port: 8080
+      volumes:
+      - name: db
+        emptyDir: {}
+      - name: heketi-db-secret
+        secret:
+          secretName: heketi-db-backup
+      - name: heketi-topology
+        configMap:
+          name: heketi-topology

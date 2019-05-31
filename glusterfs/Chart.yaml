@@ -1,0 +1,10 @@
+apiVersion: v1
+description: GlusterFS is a scalable network filesystem
+home: https://www.gluster.org
+maintainers:
+- email: zlprasy@gmail.com
+  name: lizzano
+name: glusterfs
+sources:
+- https://github.com/liozzazhang/kubernetes-glusterfs-cluster
+version: 0.1.0

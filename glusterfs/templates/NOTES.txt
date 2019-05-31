@@ -1,0 +1,7 @@
+Happy Installing Heketi-GlusterFS!
+
+Now you can use `curl http://${Heketi service ClusterIP}:8080/hello` to check heketi server health.
+```
+$ curl http://${Heketi service ClusterIP}:8080/hello
+Hello from Heketi
+```
