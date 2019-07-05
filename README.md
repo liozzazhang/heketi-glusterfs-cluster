@@ -1,4 +1,4 @@
-# gluster-kubernetes
+# glusterfs-kubernetes
 
 [![Build Status](https://travis-ci.org/gluster/gluster-kubernetes.svg?branch=master)](https://travis-ci.org/gluster/gluster-kubernetes)
 
